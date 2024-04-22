@@ -1,10 +1,10 @@
 <template>
-  <div id="result">
-    <div>{{ message }}</div>
-    <div id="score">
-      <div>Your High Score</div>
-      <div>No highscore yet.</div>
-    </div>
+  <div
+    class="bg-skyBlue text-black w-[50rem] h-[10rem] text-2xl rounded-2xl p-4"
+  >
+    <div>{{ scoreMessage }}</div>
+    <div>{{ instructionMessage }}</div>
+    <div>{{ highScoreMessage }}</div>
   </div>
 </template>
 
@@ -12,29 +12,27 @@
 export default {
   data() {
     return {
-      message: "Click Go to test your reaction time!",
+      instructionMessage: "Click Go to test your reaction time!",
+      scoreMessage: null,
+      highScoreMessage: null,
     };
   },
-  props: ["buttonType"],
+  props: ["buttonType", "reactionTime", "highScoreTime"],
   updated() {
-    this.message =
-      this.buttonType === "Go"
-        ? "Click Go to test your reaction time!"
-        : "Pay attention. Click stop when the color changes.";
-
+    if (this.buttonType === "Stop") {
+      this.instructionMessage = "Pay attention. Click stop when color changes";
+      this.scoreMessage = null;
+      this.highScoreMessage = null;
+    } else if (this.reactionTime && this.buttonType === "Go") {
+      this.scoreMessage = `Your Current Score is: ${this.reactionTime}`;
+      this.instructionMessage = "Click Go to test your reaction time!";
+      this.highScoreMessage = `Your High Score is: ${this.highScoreTime}`;
+    } else if (this.reactionTime === undefined) {
+      this.instructionMessage = `Too quick... Try again!`;
+    }
   },
 };
 </script>
 
 <style scoped>
-#result {
-  background-color: #d9edf7;
-  color: black;
-  border: none;
-  font-size: 1.5rem;
-  width: 50rem;
-  height: 10rem;
-  border-radius: 1rem;
-  padding: 1rem;
-}
 </style>

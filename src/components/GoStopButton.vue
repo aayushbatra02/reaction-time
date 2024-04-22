@@ -1,7 +1,8 @@
 <template>
   <button
+    class="bg-green text-white w-[50rem] h-[10rem] text-6xl rounded-2xl"
     :style="[buttonType === 'Stop' ? { backgroundColor: '#C86A67' } : null]"
-    @click="$emit(`changeButton`)"
+    @click="$emit(`buttonHandler`)"
   >
     {{ buttonType }}
   </button>
@@ -10,19 +11,6 @@
 <script>
 export default {
   props: ["buttonType"],
-  emits:["changeButton"],
+  emits: ["buttonHandler"],
 };
 </script>
-
-<style scoped>
-button {
-  background-color: #68ae64;
-  color: white;
-  border: none;
-  font-size: 4rem;
-  width: 50rem;
-  height: 10rem;
-  border-radius: 1rem;
-  cursor: pointer;
-}
-</style>
