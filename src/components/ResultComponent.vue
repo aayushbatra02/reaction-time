@@ -43,7 +43,7 @@ export default {
       this.minutes = min;
       this.seconds = sec;
       this.instructionMessage = "Click Go to test your reaction time!";
-      this.highScoreMessage = `Your High Score is: ${this.highScoreTime}`;
+      this.highScoreMessage = `Your High Score is ${this.highScoreTime}`;
     } else if (this.reactionTime === undefined) {
       this.instructionMessage = `Too quick... Try again!`;
     }
