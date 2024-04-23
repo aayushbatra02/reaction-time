@@ -1,10 +1,10 @@
 <template>
   <div
-    class="bg-skyBlue text-black w-[50rem] h-[10rem] text-2xl rounded-2xl p-4"
+    class="bg-skyBlue text-black w-[50rem] text-2xl rounded-2xl p-4 flex flex-col gap-4"
   >
-    <div>{{ scoreMessage }}</div>
-    <div>{{ instructionMessage }}</div>
-    <div>{{ highScoreMessage }}</div>
+    <div v-if="scoreMessage">{{ scoreMessage }}</div>
+    <div v-if="instructionMessage">{{ instructionMessage }}</div>
+    <div v-if="highScoreMessage">{{ highScoreMessage }}</div>
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
       this.scoreMessage = null;
       this.highScoreMessage = null;
     } else if (this.reactionTime && this.buttonType === "Go") {
-      this.scoreMessage = `Your Current Score is: ${this.reactionTime}`;
+      this.scoreMessage = `Your reaction time was ${this.reactionTime}`;
       this.instructionMessage = "Click Go to test your reaction time!";
       this.highScoreMessage = `Your High Score is: ${this.highScoreTime}`;
     } else if (this.reactionTime === undefined) {
