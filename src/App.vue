@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="[gameStop ? 'bg-darkGreen' : 'bg-blue']"
+    :class="[isGameStopped ? 'bg-darkGreen' : 'bg-blue']"
     class="w-screen h-screen bg-blue flex flex-col justify-center items-center gap-8"
   >
     <game-button
@@ -10,16 +10,16 @@
     <result-component
       :buttonType="buttonType"
       :reactionTime="reactionTime"
-      :gameStop="gameStop"
+      :isGameStopped="isGameStopped"
       :userStopTime="userStartTime"
       :highScoreTime="highScoreTime"
     ></result-component>
     <result-popup
       v-if="showPopup"
-      @hidePopup="() => (showPopup = false)"
+      @hidePopup="hidePopup"
       :reactionTime="reactionTime"
       :highScoreTime="highScoreTime"
-      :isHighScore="reactionTimeInMS <= highScoreInMs"
+      :isHighScore="isHighScore"
     ></result-popup>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       buttonType: "Go",
-      gameStop: false,
+      isGameStopped: false,
       userStartTime: 0,
       userStopTime: null,
       gameStopTime: 0,
@@ -47,7 +47,7 @@ export default {
     };
   },
   methods: {
-    randomNumber(max, min) {
+    generateRandomNumber(max, min) {
       return Math.floor(Math.random() * (max - min + 1) + min);
     },
 
@@ -73,15 +73,15 @@ export default {
 
       if (this.buttonType === "Stop") {
         this.userStartTime = Date.now();
-        this.gameStop = false;
-        this.gameStopTime = this.randomNumber(5000, 2000);
+        this.isGameStopped = false;
+        this.gameStopTime = this.generateRandomNumber(5000, 2000);
         this.currentTimeOut = setTimeout(() => {
-          this.gameStop = true;
+          this.isGameStopped = true;
         }, this.gameStopTime);
       } else {
         this.userStopTime = Date.now() - this.userStartTime;
 
-        if (this.gameStop === false) {
+        if (this.isGameStopped === false) {
           clearTimeout(this.currentTimeOut);
         }
 
@@ -93,7 +93,6 @@ export default {
             this.highScoreInMs === null ||
             this.highScoreInMs > timeDifference
           ) {
-            console.log("NEW HIGH SCORE");
             this.highScoreInMs = timeDifference;
             this.highScoreTime = this.milliSecondsToTime(timeDifference);
           }
@@ -101,22 +100,18 @@ export default {
         } else {
           this.reactionTime = undefined;
         }
-        this.gameStop = false;
+        this.isGameStopped = false;
       }
     },
+    hidePopup(){
+      this.showPopup = false
+    }
   },
-  updated() {
-    console.log({
-      // gameStop: this.gameStop,
-      // startTime: this.userStartTime,
-      // UserStopTime: this.userStopTime,
-      // GameStopTime: this.gameStopTime,
-      // reactionTime: this.reactionTimeInMS,
-      // highScoreTime: this.highScoreInMs,
-      // buttonType: this.buttonType,
-      // highScoreInMs: this.highScoreInMs,
-    });
-  },
+  computed:{
+    isHighScore(){
+      return this.reactionTimeInMS <= this.highScoreInMs
+    }
+  }
 };
 </script>
 

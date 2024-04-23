@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-skyBlue text-black w-[50rem] text-2xl rounded-2xl p-4 flex flex-col gap-4"
+    class="bg-skyBlue text-black w-60 sm:w-[30rem] lg:w-[40rem] text-md md:text-lg lg:text-2xl rounded-xl p-4 lg:py-6 flex flex-col gap-4"
   >
     <div v-if="scoreMessage">
       Your reaction time was <span v-if="hours">{{ hours }} hour </span>
