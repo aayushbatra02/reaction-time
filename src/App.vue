@@ -4,46 +4,39 @@
     class="w-screen h-screen bg-blue flex flex-col justify-center items-center gap-8"
   >
     <game-button
-      :buttonType="buttonType"
+      :buttonLabel="buttonLabel"
       @gameButtonHandler="gameButtonHandler"
     ></game-button>
     <result-component
-      :buttonType="buttonType"
+      :buttonLabel="buttonLabel"
       :reactionTime="reactionTime"
       :isGameStopped="isGameStopped"
       :userStopTime="userStartTime"
       :highScoreTime="highScoreTime"
     ></result-component>
-    <result-popup
-      v-if="showPopup"
-      @hidePopup="hidePopup"
-      :reactionTime="reactionTime"
-      :highScoreTime="highScoreTime"
-      :isHighScore="isHighScore"
-    ></result-popup>
   </div>
 </template>
 
 <script>
+import moment from "moment";
+
 import GameButton from "./components/GameButton";
 import ResultComponent from "./components/ResultComponent.vue";
-import ResultPopup from "./components/ResultPopup.vue";
 
 export default {
-  components: { GameButton, ResultComponent, ResultPopup },
+  components: { GameButton, ResultComponent },
   data() {
     return {
-      buttonType: "Go",
+      buttonLabel: "Go",
       isGameStopped: false,
       userStartTime: 0,
       userStopTime: null,
       gameStopTime: 0,
       reactionTime: null,
-      reactionTimeInMS:null,
+      reactionTimeInMS: null,
       highScoreInMs: null,
       highScoreTime: null,
       currentTimeOut: null,
-      showPopup: false,
     };
   },
   methods: {
@@ -52,15 +45,8 @@ export default {
     },
 
     milliSecondsToTime(durationInMs) {
-      let hours = Math.floor(durationInMs / (1000 * 60 * 60));
-      hours = this.precedingZeroHandler(hours);
-      durationInMs %= 1000 * 60 * 60;
-      let minutes = Math.floor(durationInMs / (1000 * 60));
-      minutes = this.precedingZeroHandler(minutes);
-      durationInMs %= 1000 * 60;
-      let seconds = Math.floor(durationInMs / 1000);
-      seconds = this.precedingZeroHandler(seconds);
-      let milliseconds = durationInMs % 1000;
+      const duration = moment.duration(durationInMs);
+      const { hours, minutes, seconds, milliseconds } = duration._data;
       return `${hours}:${minutes}:${seconds}.${milliseconds}`;
     },
 
@@ -69,9 +55,9 @@ export default {
     },
 
     gameButtonHandler() {
-      this.buttonType = this.buttonType === "Go" ? "Stop" : "Go";
+      this.buttonLabel = this.buttonLabel === "Go" ? "Stop" : "Go";
 
-      if (this.buttonType === "Stop") {
+      if (this.buttonLabel === "Stop") {
         this.userStartTime = Date.now();
         this.isGameStopped = false;
         this.gameStopTime = this.generateRandomNumber(5000, 2000);
@@ -87,7 +73,7 @@ export default {
 
         const timeDifference = this.userStopTime - this.gameStopTime;
         if (this.userStopTime > this.gameStopTime) {
-          this.reactionTimeInMS = timeDifference
+          this.reactionTimeInMS = timeDifference;
           this.reactionTime = this.milliSecondsToTime(timeDifference);
           if (
             this.highScoreInMs === null ||
@@ -96,22 +82,13 @@ export default {
             this.highScoreInMs = timeDifference;
             this.highScoreTime = this.milliSecondsToTime(timeDifference);
           }
-          this.showPopup = true;
         } else {
           this.reactionTime = undefined;
         }
         this.isGameStopped = false;
       }
     },
-    hidePopup(){
-      this.showPopup = false
-    }
   },
-  computed:{
-    isHighScore(){
-      return this.reactionTimeInMS <= this.highScoreInMs
-    }
-  }
 };
 </script>
 

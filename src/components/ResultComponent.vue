@@ -23,7 +23,7 @@ export default {
       seconds: 0,
     };
   },
-  props: ["buttonType", "reactionTime", "highScoreTime"],
+  props: ["buttonLabel", "reactionTime", "highScoreTime"],
   methods: {
     getUnitsFromTime(time) {
       let timeUnits = time?.split(":");
@@ -32,11 +32,11 @@ export default {
     },
   },
   updated() {
-    if (this.buttonType === "Stop") {
+    if (this.buttonLabel === "Stop") {
       this.instructionMessage = "Pay attention. Click stop when color changes";
       this.scoreMessage = null;
       this.highScoreMessage = null;
-    } else if (this.reactionTime && this.buttonType === "Go") {
+    } else if (this.reactionTime && this.buttonLabel === "Go") {
       const { hr, min, sec } = this.getUnitsFromTime(this.reactionTime);
       this.scoreMessage = true;
       this.hours = hr;
