@@ -3,10 +3,10 @@
     :class="[gameStop ? 'bg-darkGreen' : 'bg-blue']"
     class="w-screen h-screen bg-blue flex flex-col justify-center items-center gap-8"
   >
-    <go-stop-button
+    <game-button
       :buttonType="buttonType"
       @buttonHandler="buttonHandler"
-    ></go-stop-button>
+    ></game-button>
     <result-component
       :buttonType="buttonType"
       :reactionTime="reactionTime"
@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import GoStopButton from "./components/GoStopButton";
+import GameButton from "./components/GameButton";
 import ResultComponent from "./components/ResultComponent.vue";
 import ResultPopup from "./components/ResultPopup.vue";
 
 export default {
-  components: { GoStopButton, ResultComponent, ResultPopup },
+  components: { GameButton, ResultComponent, ResultPopup },
   data() {
     return {
       buttonType: "Go",
@@ -111,8 +111,8 @@ export default {
       // startTime: this.userStartTime,
       // UserStopTime: this.userStopTime,
       // GameStopTime: this.gameStopTime,
-      reactionTime: this.reactionTimeInMS,
-      highScoreTime: this.highScoreInMs,
+      // reactionTime: this.reactionTimeInMS,
+      // highScoreTime: this.highScoreInMs,
       // buttonType: this.buttonType,
       // highScoreInMs: this.highScoreInMs,
     });
