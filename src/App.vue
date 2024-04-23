@@ -5,7 +5,7 @@
   >
     <game-button
       :buttonType="buttonType"
-      @buttonHandler="buttonHandler"
+      @gameButtonHandler="gameButtonHandler"
     ></game-button>
     <result-component
       :buttonType="buttonType"
@@ -68,7 +68,7 @@ export default {
       return time < 10 ? `0${time}` : time;
     },
 
-    buttonHandler() {
+    gameButtonHandler() {
       this.buttonType = this.buttonType === "Go" ? "Stop" : "Go";
 
       if (this.buttonType === "Stop") {
